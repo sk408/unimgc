@@ -6,7 +6,7 @@
 #include <inttypes.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include "custom_printf.h"
 #include "endian.h"
 #include "image.h"
 
@@ -89,8 +89,8 @@ static void unimgc_data(struct imgc_header *hdr, FILE *in, FILE *out)
 
     uint64_t total_size = hdr->image.sector_count * hdr->image.sector_size;
     for (;;) {
-        if (options.verbose >= 1)
-            fprintf(stderr, "\r%04.2f%% (%" PRIu64 " / %" PRIu64 " bytes)...",
+
+            custom_printf("\r%04.2f%% (%" PRIu64 " / %" PRIu64 " bytes)...",
                 (100.0 * ftello(out)) / total_size, ftello(out), total_size);
 
         /* read block header buf */
@@ -194,7 +194,7 @@ static void usage(const char *prog)
     puts("   OUT \t output file; defaults to standard output");
 }
 
-int main(int argc, char **argv)
+int custom_main(int argc, char **argv)
 {
     int opt;
 
